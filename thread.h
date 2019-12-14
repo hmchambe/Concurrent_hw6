@@ -1,3 +1,11 @@
+// ----------------------------------------------------------- 
+// NAME : Hunter Chambers                         User ID: 81276171 
+// DUE DATE : 12/13/2019                                       
+// PROGRAM ASSIGNMENT 6                                        
+// FILE NAME : thread.h            
+// PROGRAM PURPOSE :                                           
+//      Compute the dot product of two matrices
+// ----------------------------------------------------------- 
 #ifndef _THREAD_STUFF
 #define _THREAD_STUFF
 #include <iostream>
@@ -6,6 +14,7 @@
 #include <stdio.h>
 #include <cstring>
 #include "ThreadClass.h"
+#include "thread.h"
 
 
 extern int A[212][212];
@@ -15,10 +24,10 @@ extern SynOneToOneChannel *channelR[212][212];
 extern SynOneToOneChannel *channelD[212][212];
 
 
-class Columns : public Thread
+class ColumnThread : public Thread
 {
 	public:
-		Columns(int lastRow, int c);
+		ColumnThread(int lastRow, int c);
 	private:
 		void ThreadFunc();
 		int lastRow;
@@ -26,10 +35,10 @@ class Columns : public Thread
 		char buf[212];
 };
 
-class Rows : public Thread
+class RowThread : public Thread
 {
 	public:
-		Rows(int lastColumn, int r);
+		RowThread(int lastColumn, int r);
 	private:
 		void ThreadFunc();
 		int lastColumn;
@@ -37,10 +46,10 @@ class Rows : public Thread
 		char buf[212];
 };
 
-class Computer : public Thread
+class ComputerThread : public Thread
 {
 	public:
-		Computer(int r, int c, int lastRow, int lastColumn);
+		ComputerThread(int r, int c, int lastRow, int lastColumn);
 	private:
 		void ThreadFunc();
 		int r;
