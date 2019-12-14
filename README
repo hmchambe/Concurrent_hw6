@@ -1,0 +1,24 @@
+My program works be creating channels for each thread to send their value to the next thread. A thread is created for each value. The dot product works by multiplying the values in the row by the values in the column and adding those together to put into the final resulting matrix. This works because asynchronous channels force the thread to wait for the information before continuing, thus making it so that it does not receive the wrong values at the wrong time. 
+
+LastRow: tells the threads when to stop looping for the dot product
+LastColumn: tells the threads when to stop loopong for the dot product
+c: the column index to be passed on
+r: the row index to be passed on 
+buf: always a buffer to write to when needed
+buffer: always a buffer to write to when needed
+receivedRow: the row value received for computing the dot product
+	-> 33 arbitrarily
+receivedColumn: the column value receieved for computing the dot product
+	-> 33 arbitrarily
+EOD: initialized to -1 because that was the recommended value to use
+
+1. Pij receives row i from matrix A when the individual threads send the information and column j from matrix B when the threads send the information to compute Cij. When the threads are done sending their information they send -1 to P to notify it that they are done sending information and that they are terminating. 
+
+2. Synchronous channels are necessary because they block the the process from continuing until they have received what they need. If the channels were asynchronous, the P processes would be all out of order and the values would be incorrect. This also ensures mutual exclusion because only one process is doing a computation at a time. This needs to happen because the dot product includes values from the whole row or column and if a value was computed too early or too late, it would affect values after it. 
+
+3. It looks to me like the P process receives the EOD from r1 then r2 then r3 and similarly from c1 then c2 then c3. So it works from left to right and top to bottom
+
+    |
+    v
+--->P
+4. It can as long as it has sent the information that it needs to send and sends its EOD. Then it can terminate.
